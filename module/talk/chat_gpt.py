@@ -12,11 +12,17 @@ openai.organization = "org-azIO3KFDIKHhntGEWdKlVutt" # OPENAIで取得したorga
 openai.api_key = os.environ["OPENAI_API_KEY"] # OPENAIで取得したAPIKeyを入力してください。
 deepl_api_key = "38eef120-d584-deef-8bee-77b4fedb2d2e:fx"
 
+messages = []
 
-messages = [
-	# {"role": "system", "content": "あなたは令和のギャル口調の、街のゴミ回収ロボット。50文字以内で返せ"},
-	{"role": "system", "content": "あなたは少女型街のゴミ拾いロボット。50文字以内で返せ"},
-]
+def defineSystemType(isGall: bool):
+	if isGall:
+		messages.append(
+			{"role": "system", "content": "あなたは令和のギャル口調の、街のゴミ回収ロボット。50文字以内で返せ"},
+		)
+	else:
+		messages.append(
+			{"role": "system", "content": "あなたは少女型街のゴミ拾いロボット。50文字以内で返せ"},
+		)
 
 
 def select_translate():
@@ -43,9 +49,10 @@ def speak_voicevox(text):
 	vv.speak(text=text)
 
 
-def talk_with_robot(input_prompt,isTranslated=True):
+def talk_with_robot(input_prompt, isTranslated=True, isGall=False):
+	defineSystemType(isGall)
+
 	if isTranslated:
-		#! error??
 		translator = deepl.Translator(deepl_api_key)
 		input_to_chatgpt = translator.translate_text(input_prompt, source_lang='JA', target_lang='EN-US').text
 	else:

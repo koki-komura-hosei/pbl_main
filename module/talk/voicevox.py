@@ -6,8 +6,8 @@ import time
 
 
 class Voicevox:
-	# speaker_id = 3 # VOICEVOX:ずんだもん
-	speaker_id = 5 # VOICEVOX:ずんだもん（セクシー）
+	speaker_id = 3 # VOICEVOX:ずんだもん
+	# speaker_id = 5 # VOICEVOX:ずんだもん（セクシー）
 
 	def __init__(self, host="127.0.0.1", port=50021):
 		self.host = host

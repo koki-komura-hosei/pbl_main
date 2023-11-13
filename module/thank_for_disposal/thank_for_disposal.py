@@ -16,8 +16,8 @@ sound_path = sound_path_prefix + str(sound_num) + ".wav"
 
 
 def process_data(data):
-    # データを処理するための関数
-    # この関数内でデータに基づいた処理を行います
+	# データを処理するための関数
+	# この関数内でデータに基づいた処理を行います
 	playsound(sound_path)
 	print("Received data:", data)
 
