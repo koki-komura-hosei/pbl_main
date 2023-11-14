@@ -1,7 +1,7 @@
 import openai
 import deepl
-import pickle
-import datetime
+# import pickle
+# import datetime
 import os
 from module.talk.voicevox import Voicevox
 
@@ -17,11 +17,11 @@ messages = []
 def defineSystemType(isGall: bool):
 	if isGall:
 		messages.append(
-			{"role": "system", "content": "あなたは令和のギャル口調の、街のゴミ回収ロボット。50文字以内で返せ"},
+			{"role": "system", "content": "あなたは令和のギャル口調の、街のゴミ回収ロボット。80文字以内で返せ"},
 		)
 	else:
 		messages.append(
-			{"role": "system", "content": "あなたは少女型街のゴミ拾いロボット。50文字以内で返せ"},
+			{"role": "system", "content": "あなたは少女型街のゴミ拾いロボット。80文字以内で返せ"},
 		)
 
 

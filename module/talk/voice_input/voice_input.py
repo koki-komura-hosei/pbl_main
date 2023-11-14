@@ -8,26 +8,27 @@ def get_audio_from_mic():
 		print("なにか話してください")
 		r = sr.Recognizer()
 		r.adjust_for_ambient_noise(source) #雑音対策
-		audio = r.listen(source)
-		print("考え中...")
-		print(r.recognize_google(audio, language='ja-JP'))
+		try:
+			audio = r.listen(source, timeout=20)
+			print("音声取得完了")
+		except sr.WaitTimeoutError:
+			print("音声を取得できませんでした")
 
-		# while True:
-		# 	try:
-		# 		print(r.recognize_google(audio, language='ja-JP'))
+	try:
+		print("音声認識中...")
+		result_by_google = r.recognize_google(audio, language='ja-JP')
+		print("google: ", result_by_google)
+	except sr.UnknownValueError:
+		print("音声を認識できませんでした")
+	except sr.RequestError as e:
+		print(f"エラーが発生しました: {e}")
 
-		# 		# "ストップ" と言ったら音声認識を止める
-		# 		if r.recognize_google(audio, language='ja-JP') == "ストップ" :
-		# 			print("end")
-		# 			break
+	# "ストップ" と言ったら音声認識を止める
+	if result_by_google == "ストップ" :
+		print("end")
+		exit()
 
-		# 	# 以下は認識できなかったときに止まらないように。
-		# 	except sr.UnknownValueError:
-		# 		print("could not understand audio")
-		# 	except sr.RequestError as e:
-		# 		print("Could not request results from Google Speech Recognition service; {0}".format(e))
-
-		return audio
+	return audio
 
 def voice_to_text():
 	audio = get_audio_from_mic()
@@ -35,3 +36,6 @@ def voice_to_text():
 	audio_data.name = 'from_mic.wav'
 	transcript = openai.Audio.transcribe('whisper-1', audio_data)
 	return transcript['text']
+
+if __name__ == "__main__":
+	voice_to_text()
