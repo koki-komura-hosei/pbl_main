@@ -5,8 +5,8 @@ import deepl
 import os
 from module.talk.voicevox import Voicevox
 
-#! Steps:
-#!   1. run in terminal "ngrok http 50021"
+# Steps:
+#   1. run in terminal "ngrok http 50021"
 
 openai.organization = "org-azIO3KFDIKHhntGEWdKlVutt" # OPENAIで取得したorganization idを入力してください。
 openai.api_key = os.environ["OPENAI_API_KEY"] # OPENAIで取得したAPIKeyを入力してください。
@@ -14,14 +14,18 @@ deepl_api_key = "38eef120-d584-deef-8bee-77b4fedb2d2e:fx"
 
 messages = []
 
-def defineSystemType(isGall: bool):
+def defineSystemType(isGall: bool, isYakuza: bool):
 	if isGall:
 		messages.append(
 			{"role": "system", "content": "あなたは令和のギャル口調の、街のゴミ回収ロボット。80文字以内で返せ"},
 		)
+	if isYakuza:
+		messages.append(
+			{"role": "system", "content": "あなたはヤクザゴミ回収ロボットです。80文字以内で返せ"}
+		)
 	else:
 		messages.append(
-			{"role": "system", "content": "あなたは少女型街のゴミ拾いロボット。80文字以内で返せ"},
+			{"role": "system", "content": "あなたは15歳、街のゴミ拾いロボット。80文字以内で返せ"},
 		)
 
 
@@ -49,8 +53,8 @@ def speak_voicevox(text):
 	vv.speak(text=text)
 
 
-def talk_with_robot(input_prompt, isTranslated=True, isGall=False):
-	defineSystemType(isGall)
+def talk_with_robot(input_prompt, isTranslated=True, isGall=False, isYakuza=False):
+	defineSystemType(isGall, isYakuza)
 
 	if isTranslated:
 		translator = deepl.Translator(deepl_api_key)
