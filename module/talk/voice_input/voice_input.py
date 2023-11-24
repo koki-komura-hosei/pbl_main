@@ -4,16 +4,20 @@ import openai
 from module.mini_game.janken import lets_janken, play_janken
 
 
-def get_audio_from_mic():
+def get_audio_from_mic(r):
 	with sr.Microphone(sample_rate=16000) as source:
-		r = sr.Recognizer()
-		r.adjust_for_ambient_noise(source) #雑音対策
+		r.adjust_for_ambient_noise(source) # 雑音対策
 		try:
 			print("なにか話してください")
 			audio = r.listen(source, timeout=20)
+			return audio
 		except sr.WaitTimeoutError:
 			print("音声を取得できませんでした")
 			return False
+
+def recognize_audio_by_mic():
+	r = sr.Recognizer()
+	audio = get_audio_from_mic(r)
 
 	try:
 		print("音声認識中...")
@@ -23,8 +27,9 @@ def get_audio_from_mic():
 		# 'ジャンケン’という単語を認識したら始める
 		if 'ジャンケン' in result_by_google or 'じゃんけん' in result_by_google:
 			lets_janken()
+
 			def user_janken():
-				voice_input = voice_to_text_by_google()
+				voice_input = voice_to_text_by_google_in_janken()
 				# if voice_input == False:
 				# 	return False
 				if "グー" in voice_input or "チョキ" in voice_input or "パー" in voice_input:
@@ -32,7 +37,9 @@ def get_audio_from_mic():
 					return False
 				else:
 					user_janken()
+
 			user_janken()
+			return False
 
 		# "ストップ" と言ったら音声認識を止める
 		if result_by_google == "ストップ" :
@@ -48,16 +55,9 @@ def get_audio_from_mic():
 		return False
 
 
-def voice_to_text_by_google():
-	with sr.Microphone(sample_rate=16000) as source:
-		r = sr.Recognizer()
-		r.adjust_for_ambient_noise(source) #雑音対策
-		try:
-			print("なにか話してください")
-			audio = r.listen(source, timeout=20)
-		except sr.WaitTimeoutError:
-			print("音声を取得できませんでした")
-			return False
+def voice_to_text_by_google_in_janken():
+	r = sr.Recognizer()
+	audio = get_audio_from_mic(r)
 
 	try:
 		print("音声認識中...")
@@ -76,7 +76,7 @@ def voice_to_text_by_google():
 
 
 def voice_to_text():
-	audio = get_audio_from_mic()
+	audio = recognize_audio_by_mic()
 	if audio == False:
 		return False
 	else:
