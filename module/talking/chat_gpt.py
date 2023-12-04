@@ -75,7 +75,7 @@ def talk_with_robot(input_prompt, isTranslated=True, isGall=False, isYakuza=Fals
 	)
 
 	print(input_prompt)
-	print('→ {}', input_to_chatgpt)
+	print('→ ', input_to_chatgpt)
 	result = res['choices'][0]['message']['content']
 	print('------------------------------------------')
 	print(result)
